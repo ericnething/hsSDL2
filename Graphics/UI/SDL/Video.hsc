@@ -76,6 +76,7 @@ module Graphics.UI.SDL.Video
   , glSetAttribute
   , glSetSwapInterval
   , glGetSwapInterval
+  , sdlGLAttributeToC
 
     -- * Surfaces
   , surfaceFormat
@@ -272,6 +273,9 @@ data GLAttribute
   | GLContextMinorVersion
   | GLContextFlags
   | GLContextProfileMask
+  | GLContextProfileCore
+  | GLContextProfileCompatibility
+  | GLContextProfileES
   | GLShareWithCurrentContext
   | GLFramebufferSRGBCapable
   | GLContextEGL
@@ -297,10 +301,18 @@ sdlGLAttributeToC GLRetainedBacking = #{const SDL_GL_RETAINED_BACKING}
 sdlGLAttributeToC GLContextMajorVersion = #{const SDL_GL_CONTEXT_MAJOR_VERSION}
 sdlGLAttributeToC GLContextMinorVersion = #{const SDL_GL_CONTEXT_MINOR_VERSION}
 sdlGLAttributeToC GLContextFlags = #{const SDL_GL_CONTEXT_FLAGS}
+
 sdlGLAttributeToC GLContextProfileMask = #{const SDL_GL_CONTEXT_PROFILE_MASK}
+-- Profile Mask Settings
+sdlGLAttributeToC GLContextProfileCore = #{const SDL_GL_CONTEXT_PROFILE_CORE}
+sdlGLAttributeToC GLContextProfileCompatibility = #{const SDL_GL_CONTEXT_PROFILE_COMPATIBILITY}
+sdlGLAttributeToC GLContextProfileES = #{const SDL_GL_CONTEXT_PROFILE_ES}
+
 sdlGLAttributeToC GLShareWithCurrentContext = #{const SDL_GL_SHARE_WITH_CURRENT_CONTEXT}
 sdlGLAttributeToC GLFramebufferSRGBCapable = #{const SDL_GL_FRAMEBUFFER_SRGB_CAPABLE}
 sdlGLAttributeToC GLContextEGL = #{const SDL_GL_CONTEXT_EGL}
+
+--------------------------------------------------------------------------------
 
 glGetAttribute :: GLAttribute -> IO #{type int}
 glGetAttribute attribute = alloca $ \payloadPtr ->  do
